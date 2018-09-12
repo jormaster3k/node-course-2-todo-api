@@ -73,8 +73,8 @@ describe('GET /todos', () => {
               expect(res.body.todos.length).toBe(2);
           })
           .end(done);
-    })
-})
+    });
+});
 
 describe('GET /todos/:id', () => {
     it('should return todo doc', (done) => {
@@ -85,7 +85,7 @@ describe('GET /todos/:id', () => {
               expect(res.body.todo.text).toBe(todos[0].text);
           })
           .end(done);
-    })
+    });
 
     it('should return 404 if todo not found', (done) => {
         var hexId = new ObjectID().toHexString();
@@ -93,12 +93,24 @@ describe('GET /todos/:id', () => {
           .get(`/todos/${hexId}`)
           .expect(404)
           .end(done);
-    })
+    });
 
     it('should return 404 for non-object IDs', (done) => {
         request(app)
           .get(`/todos/12345`)
           .expect(404)
           .end(done);
-    })
-})
+    });
+});
+
+describe('DELETE /todos/;id', () => {
+    it('should delete object', (done) => {
+        request(app)
+          .delete(`/todos/${todos[0]._id.toHexString()}`)
+          .expect(200)
+          .expect((res) => {
+              expect(res.body.todo.text).toBe(todos[0].text);
+          })
+          .end(done);
+    });
+});
